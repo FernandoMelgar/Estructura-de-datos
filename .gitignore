@@ -25,3 +25,7 @@ hs_err_pid*
 # custom Ignores
 Estructura-de-datos.iml
 .idea/
+.settings/
+bin/
+.project
+.classpath
