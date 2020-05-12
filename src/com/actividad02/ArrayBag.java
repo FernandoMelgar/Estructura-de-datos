@@ -1,23 +1,26 @@
-package com.actividad03;
+package com.actividad02;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-import static java.lang.System.arraycopy;
+/**
+ * An implementation of a Bag, using an array
+ * @author Julio Arriaga
+ */
+public class ArrayBag<T> implements BagInterface<T> {
 
-public class ResizableArrayBag<T> implements BagInterface<T> {
-  private T[] bag;
+  protected T[] bag;
   protected int size;
-  private int numElements;
-  private static final int DEFAULT_SIZE = 10;
+  protected static final int DEFAULT_SIZE = 10;
+  protected int numElements;
 
-  public ResizableArrayBag(int size){
+  public ArrayBag(int size){
     this.size = size;
     bag = (T[]) new Object[size];
     numElements = 0;
   }
 
-  public ResizableArrayBag(){
+  public ArrayBag(){
     this(DEFAULT_SIZE);
   }
 
@@ -38,19 +41,12 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
 
   @Override
   public boolean add(T newEntry) {
-    if(isFull())
-      updateBagSize();
+    if(isFull()){
+      return false;
+    }
     bag[numElements] = newEntry;
     numElements++;
     return true;
-  }
-
-  private void updateBagSize(){
-    size = numElements * 2;
-    T[] nBag = (T[]) new Object[size];
-    arraycopy(bag, 0, nBag, 0, bag.length);
-    bag  = nBag;
-
   }
 
   @Override
@@ -69,7 +65,7 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
 
   @Override
   public void remove(T anEntry) {
-    for(int i=0; i <= numElements;i++){
+    for(int i = 0; i < numElements; i++){
       if(bag[i].equals(anEntry)){
         numElements--;
         bag[i] = bag[numElements];
@@ -77,12 +73,6 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
       }
     }
     throw new NoSuchElementException("El elemento no esta en la bolsa");
-  }
-
-  public void removeEvery(T anEntry){
-    for (int i = 0; i <= getFrequencyOf(anEntry); i++) {
-      remove(anEntry);
-    }
   }
 
   @Override
@@ -98,10 +88,7 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
 
   @Override
   public boolean contains(T anEntry) {
-    for(int i = 0; i < numElements; i++)
-      if (bag[i].equals(anEntry))
-        return true;
-    return false;
+    return getFrequencyOf(anEntry) > 0;
   }
 
   @Override
@@ -111,8 +98,8 @@ public class ResizableArrayBag<T> implements BagInterface<T> {
 
   @Override
   public String toString(){
-    if(numElements == 0)
-      return "La bolsa está vacía!";
     return Arrays.toString(toArray());
   }
+
 }
+

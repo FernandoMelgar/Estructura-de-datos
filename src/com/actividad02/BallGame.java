@@ -1,4 +1,4 @@
-package com.actividad03;
+package com.actividad02;
 public class BallGame {
 
   public static String game(int ballNumber) {

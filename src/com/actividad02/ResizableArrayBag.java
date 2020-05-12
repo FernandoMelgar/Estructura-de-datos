@@ -1,26 +1,23 @@
-package com.actividad03;
+package com.actividad02;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
-/**
- * An implementation of a Bag, using an array
- * @author Julio Arriaga
- */
-public class ArrayBag<T> implements BagInterface<T> {
+import static java.lang.System.arraycopy;
 
-  protected T[] bag;
+public class ResizableArrayBag<T> implements BagInterface<T> {
+  private T[] bag;
   protected int size;
-  protected static final int DEFAULT_SIZE = 10;
-  protected int numElements;
+  private int numElements;
+  private static final int DEFAULT_SIZE = 10;
 
-  public ArrayBag(int size){
+  public ResizableArrayBag(int size){
     this.size = size;
     bag = (T[]) new Object[size];
     numElements = 0;
   }
 
-  public ArrayBag(){
+  public ResizableArrayBag(){
     this(DEFAULT_SIZE);
   }
 
@@ -41,12 +38,19 @@ public class ArrayBag<T> implements BagInterface<T> {
 
   @Override
   public boolean add(T newEntry) {
-    if(isFull()){
-      return false;
-    }
+    if(isFull())
+      updateBagSize();
     bag[numElements] = newEntry;
     numElements++;
     return true;
+  }
+
+  private void updateBagSize(){
+    size = numElements * 2;
+    T[] nBag = (T[]) new Object[size];
+    arraycopy(bag, 0, nBag, 0, bag.length);
+    bag  = nBag;
+
   }
 
   @Override
@@ -65,7 +69,7 @@ public class ArrayBag<T> implements BagInterface<T> {
 
   @Override
   public void remove(T anEntry) {
-    for(int i = 0; i < numElements; i++){
+    for(int i=0; i <= numElements;i++){
       if(bag[i].equals(anEntry)){
         numElements--;
         bag[i] = bag[numElements];
@@ -73,6 +77,12 @@ public class ArrayBag<T> implements BagInterface<T> {
       }
     }
     throw new NoSuchElementException("El elemento no esta en la bolsa");
+  }
+
+  public void removeEvery(T anEntry){
+    for (int i = 0; i <= getFrequencyOf(anEntry); i++) {
+      remove(anEntry);
+    }
   }
 
   @Override
@@ -88,7 +98,10 @@ public class ArrayBag<T> implements BagInterface<T> {
 
   @Override
   public boolean contains(T anEntry) {
-    return getFrequencyOf(anEntry) > 0;
+    for(int i = 0; i < numElements; i++)
+      if (bag[i].equals(anEntry))
+        return true;
+    return false;
   }
 
   @Override
@@ -98,8 +111,8 @@ public class ArrayBag<T> implements BagInterface<T> {
 
   @Override
   public String toString(){
+    if(numElements == 0)
+      return "La bolsa está vacía!";
     return Arrays.toString(toArray());
   }
-
 }
-

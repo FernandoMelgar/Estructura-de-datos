@@ -1,4 +1,4 @@
-package com.actividad04;
+package com.queue;
 
 /**
  *

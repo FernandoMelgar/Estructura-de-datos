@@ -1,4 +1,4 @@
-package com.actividad03;
+package com.actividad02;
 
 class ResizableArrayBagTest {
   public static void main(String[] args) {

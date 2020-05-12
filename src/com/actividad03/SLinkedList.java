@@ -1,9 +1,4 @@
-package com.actividad04;
-
-import java.util.Arrays;
-import java.util.NoSuchElementException;
-
-
+package com.actividad03;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
